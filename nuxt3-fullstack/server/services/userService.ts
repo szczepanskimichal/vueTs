@@ -1,3 +1,5 @@
+import { getUserByEmail, getUserByUserName } from "~/server/database/respositories/userRespository";
+
 type ExistsCheck={
   value:boolean
   message?:string
@@ -9,11 +11,10 @@ type RegistrationError={
   // generalError?:string
 }
 export async function doesUserExist(email:string, username:string):Promise<ExistsCheck>{
-//  const emailExist=getUserByEmail(email)
-//   const userNameExist=getUserByUsername(username)
- 
-  const emailExist=true
- const userNameExist=true
+const hasEmail=await getUserByEmail(email)
+const hasUsername=await getUserByUserName(username)
+const emailExist=hasEmail!==null
+const userNameExist=hasUsername!==null
  const errors:RegistrationError={}
   if(emailExist){
     errors.emailError=`Email already in use ${email}`

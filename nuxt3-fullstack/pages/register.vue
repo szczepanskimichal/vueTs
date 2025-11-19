@@ -11,7 +11,7 @@ let response = ref<FormValidation>({ hasErrors: false })
 
 async function postRegisterForm() {
   response.value = await registerWithEmail(username.value, name.value, email.value, password.value);
-  errors.value = response.value.errors
+  errors.value = response.value && response.value.errors ? response.value.errors : new Map();
 };
 
 </script>
@@ -31,7 +31,7 @@ async function postRegisterForm() {
             Sign Up
           </h2>
         </div>
-        <div v-if="response.hasErrors && errors"
+        <div v-if="response && response.hasErrors && errors"
           class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-3" role="alert">
           <strong class="font-bold">Oops, try again! </strong>
 
