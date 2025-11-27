@@ -14,7 +14,7 @@ export async function useUser(): Promise<IUser> {
       headers: useRequestHeaders(['cookie'])
     })
 
-    user.value = data.value
+    user.value = data.value as IUser
   }
 
   return user.value

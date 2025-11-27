@@ -9,6 +9,8 @@ export async function getUserByEmail(email: string): Promise<IUser> {
     select: {
       id: true,
       username: true,
+      password: true,
+      email: true,
     },
   })
 }

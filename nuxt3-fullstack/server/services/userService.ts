@@ -1,30 +1,30 @@
-import { getUserByEmail, getUserByUserName } from "~/server/database/respositories/userRespository";
+import { IUser } from '~~/types/IUser';
+import { RegistationRequest } from '~~/types/IRegistration';
+import { validate } from '~~/server/services/validator';
 
-type ExistsCheck={
-  value:boolean
-  message?:string
+export async function validateUser(data: RegistationRequest): Promise<FormValidation> {
+
+    const errors = await validate(data)
+
+    if (errors.size > 0) {
+
+        return { hasErrors: true, errors }
+    }
+
+    return { hasErrors: false }
 }
 
-type RegistrationError={
-  emailError?:string
-  usernameError?:string
-  // generalError?:string
+export function sanitizeUserForFrontend(user: IUser | undefined): IUser {
+
+    if (!user) {
+        return user
+    }
+
+    delete user.password;
+    delete user.loginType;
+    delete user.stripeCustomerId;
+
+    return user
 }
-export async function doesUserExist(email:string, username:string):Promise<ExistsCheck>{
-const hasEmail=await getUserByEmail(email)
-const hasUsername=await getUserByUserName(username)
-const emailExist=hasEmail!==null
-const userNameExist=hasUsername!==null
- const errors:RegistrationError={}
-  if(emailExist){
-    errors.emailError=`Email already in use ${email}`
-  }
-  if(userNameExist){
-    errors.usernameError=`Username already in use ${username}`
-  }
-  if(emailExist || userNameExist){
-    const message=JSON.stringify(errors)
-    return {value:true, message}
-  }
-  return {value:false}
-}
+
+
