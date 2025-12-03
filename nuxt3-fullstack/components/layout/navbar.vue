@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import BackButton from "~/components/elements/BackButton.vue";
-import {useState} from "#app";
+import { useState } from "#imports";
 
 const user = useState('user')
 const setColorTheme = (newTheme: Theme) => {
